@@ -6,11 +6,22 @@ namespace App\Entity;
 
 class Car
 {
+    const LARGE = 5;
+
+    const HUGE = 30;
+
     private $length = 0;
 
     private $brand;
 
     private $isConvertible;
+
+    private $isElectric;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Parking", inversedBy="cars",)
+     */
+    private $parking;
 
     public function __construct(string $brand = 'Unknown', bool $isConvertible = false)
     {
@@ -38,5 +49,15 @@ class Car
     public function getBrand()
     {
         return $this->brand;
+    }
+
+    public function isElectric(): bool
+    {
+        return $this->isElectric;
+    }
+
+    public function isConvertible(): bool
+    {
+        return $this->isConvertible;
     }
 }
