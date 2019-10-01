@@ -33,7 +33,7 @@ class CarFactory
         $brand = array_rand($brands);
         $length = $this->getLengthFromSpecification($specification);
         $isConvertible = false;
-        if (stripos($specification, 'convertible') !== false) {
+        if (stripos($specification, 'electric') !== false) {
             $isConvertible = true;
         }
         $car = $this->makeCar($brand, $isConvertible, $length);

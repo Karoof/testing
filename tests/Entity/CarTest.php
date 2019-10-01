@@ -30,7 +30,7 @@ class CarTest extends TestCase
     public function testReturnsFullSpecificationOfCar()
     {
         $car = new Car();
-        $this->assertSame('The Unknown non-convertible car is 0 meters long', $car->getSpecification());
+        $this->assertSame('The Unknown non-electric car is 0 meters long', $car->getSpecification());
     }
 
     public function testReturnsFullSpecificationForFerrari()
@@ -38,6 +38,6 @@ class CarTest extends TestCase
         $car = new Car('Ferrari', true);
 
         $car->setLength(4);
-        $this->assertSame('The Ferrari convertible car is 4 meters long', $car->getSpecification());
+        $this->assertSame('The Ferrari electric car is 4 meters long', $car->getSpecification());
     }
 }

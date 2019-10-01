@@ -41,7 +41,7 @@ class CarFactoryTest extends TestCase
     /**
      * @dataProvider getSpecificationTests
      */
-    public function testItMakesACarFromSpecification(string $spec, bool $expectedIsLarge, bool $expectedIsConvertible)
+    public function testItMakesACarFromSpecification(string $spec, bool $expectedIsLarge, bool $expectedIsElectric)
     {
         $car = $this->carFactory->makeFromSpecification($spec);
 
@@ -50,13 +50,13 @@ class CarFactoryTest extends TestCase
         } else {
             $this->assertLessThan(Car::LARGE, $car->getLength());
         }
-        $this->assertSame($expectedIsConvertible, $car->isConvertible());
+        $this->assertSame($expectedIsElectric, $car->isElectric());
     }
 
     public function getSpecificationTests()
     {
         return [
-            ['large convertible', true, true],
+            ['large Electric', true, true],
             ['small car', false, false],
             ['I like my bycicle', false, false],
         ];

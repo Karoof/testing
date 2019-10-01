@@ -23,10 +23,10 @@ class Car
      */
     private $parking;
 
-    public function __construct(string $brand = 'Unknown', bool $isConvertible = false)
+    public function __construct(string $brand = 'Unknown', bool $isElectric = false)
     {
         $this->brand = $brand;
-        $this->isConvertible = $isConvertible;
+        $this->isElectric = $isElectric;
     }
 
     public function getLength(): int
@@ -41,9 +41,9 @@ class Car
 
     public function getSpecification()
     {
-        $specification = 'The %s %sconvertible car is %d meters long';
+        $specification = 'The %s %selectric car is %d meters long';
 
-        return sprintf($specification, $this->brand, $this->isConvertible ? '' : 'non-', $this->length);
+        return sprintf($specification, $this->brand, $this->isElectric ? '' : 'non-', $this->length);
     }
 
     public function getBrand()
