@@ -6,6 +6,7 @@ namespace App\Tests\Factory;
 
 use App\Entity\Car;
 use App\Factory\CarFactory;
+use App\Service\CarLengthDeterminator;
 use PHPUnit\Framework\TestCase;
 
 class CarFactoryTest extends TestCase
@@ -14,11 +15,13 @@ class CarFactoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->carFactory = new CarFactory();
+        $mockLengthDeterminator = $this->createMock(CarLengthDeterminator::class);
+        $this->carFactory = new CarFactory($mockLengthDeterminator);
     }
 
     public function testItMakesALargeHummer()
     {
+        /** @var Car $car */
         $car = $this->carFactory->makeHummer(6);
         $this->assertInstanceOf(Car::class, $car);
         $this->assertIsString($car->getBrand());
@@ -41,44 +44,19 @@ class CarFactoryTest extends TestCase
     /**
      * @dataProvider getSpecificationTests
      */
-    public function testItMakesACarFromSpecification(string $spec, bool $expectedIsLarge, bool $expectedIsElectric)
+    public function testItMakesACarFromSpecification(string $spec, bool $expectedIsElectric)
     {
         $car = $this->carFactory->makeFromSpecification($spec);
 
-        if ($expectedIsLarge) {
-            $this->assertGreaterThan(Car::LARGE, $car->getLength());
-        } else {
-            $this->assertLessThan(Car::LARGE, $car->getLength());
-        }
         $this->assertSame($expectedIsElectric, $car->isElectric());
     }
 
     public function getSpecificationTests()
     {
         return [
-            ['large Electric', true, true],
-            ['small car', false, false],
-            ['I like my bycicle', false, false],
+            ['large Electric', true],
+            ['small car', false],
+            ['I like my bycicle', false],
         ];
     }
-
-    /**
-     * @dataProvider getHugeCarSpecificationTests
-     */
-    public function testItMakesAHugeCar($spec)
-    {
-        $car = $this->carFactory->makeFromSpecification($spec);
-
-        $this->assertGreaterThanOrEqual(Car::HUGE, $car->getLength());
-    }
-
-    public function getHugeCarSpecificationTests()
-    {
-        return [
-            ['huge car'],
-            ['huge'],
-            ['omg']
-        ];
-    }
-
 }

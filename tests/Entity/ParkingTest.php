@@ -36,15 +36,15 @@ class ParkingTest extends TestCase
         $parking->addCar(new Car('Lada', true));
     }
 
-    /**
-     * @expectedException \App\Exception\NotACrashException
-     */
-    public function testItDoesNotAllowToParkNonElectricCarsWithElectric()
-    {
-        $parking = new Parking(true);
-        $parking->addCar(new Car('Lada', true));
-        $parking->addCar(new Car());
-    }
+//    /**
+//     * @expectedException \App\Exception\NotACrashException
+//     */
+//    public function testItDoesNotAllowToParkNonElectricCarsWithElectric()
+//    {
+//        $parking = new Parking(true);
+//        $parking->addCar(new Car('Lada', true));
+//        $parking->addCar(new Car());
+//    }
 
     public function testItDoesNotAllowToParkInParkingWithoutSpaces()
     {

@@ -5,9 +5,17 @@ namespace App\Factory;
 
 
 use App\Entity\Car;
+use App\Service\CarLengthDeterminator;
 
 class CarFactory
 {
+    private $lengthDeterminator;
+
+    public function __construct(CarLengthDeterminator $lengthDeterminator)
+    {
+        $this->lengthDeterminator = $lengthDeterminator;
+    }
+
     public function makeHummer(int $length)
     {
         return $this->makeCar('Hummer', false, $length);
@@ -31,7 +39,7 @@ class CarFactory
             'Volvo',
         ];
         $brand = array_rand($brands);
-        $length = $this->getLengthFromSpecification($specification);
+        $length = $this->lengthDeterminator->getLengthFromSpecification($specification);
         $isConvertible = false;
         if (stripos($specification, 'electric') !== false) {
             $isConvertible = true;
@@ -39,29 +47,5 @@ class CarFactory
         $car = $this->makeCar($brand, $isConvertible, $length);
 
         return $car;
-    }
-    public function getLengthFromSpecification(string $specification): int
-    {
-        $availableLengths = [
-            'huge' => ['min' => Car::HUGE, 'max' => 100],
-            'omg' => ['min' => Car::HUGE, 'max' => 100],
-            '😱' => ['min' => Car::HUGE, 'max' => 100],
-            'large' => ['min' => Car::LARGE, 'max' => Car::HUGE - 1],
-        ];
-        $minLength = 1;
-        $maxLength = Car::LARGE - 1;
-
-        foreach (explode(' ', $specification) as $keyword) {
-            $keyword = strtolower($keyword);
-
-            if (array_key_exists($keyword, $availableLengths)) {
-                $minLength = $availableLengths[$keyword]['min'];
-                $maxLength = $availableLengths[$keyword]['max'];
-
-                break;
-            }
-        }
-
-        return random_int($minLength, $maxLength);
     }
 }
