@@ -13,10 +13,15 @@ class CarFactoryTest extends TestCase
 {
     private $carFactory;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $lengthDeterminator;
+
     public function setUp(): void
     {
-        $mockLengthDeterminator = $this->createMock(CarLengthDeterminator::class);
-        $this->carFactory = new CarFactory($mockLengthDeterminator);
+        $this->lengthDeterminator = $this->createMock(CarLengthDeterminator::class);
+        $this->carFactory = new CarFactory($this->lengthDeterminator);
     }
 
     public function testItMakesALargeHummer()
@@ -46,9 +51,12 @@ class CarFactoryTest extends TestCase
      */
     public function testItMakesACarFromSpecification(string $spec, bool $expectedIsElectric)
     {
+        $this->lengthDeterminator->method('getLengthFromSpecification')->willReturn(20);
+        /** @var Car $car */
         $car = $this->carFactory->makeFromSpecification($spec);
 
         $this->assertSame($expectedIsElectric, $car->isElectric());
+        $this->assertSame(20, $car->getLength());
     }
 
     public function getSpecificationTests()
